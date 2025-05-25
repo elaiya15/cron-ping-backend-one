@@ -1,6 +1,7 @@
 
 import express from 'express';
-import './cron/pingUrls.js';
+import { runPingTask } from './tasks/pingTask.js';
+
 import cron from 'node-cron';
 import fetch from 'node-fetch';
 
@@ -22,6 +23,12 @@ cron.schedule('*/10 * * * *', async () => {
   } catch (err) {
     console.error(`[Self-Ping] Error: ${err.message}`);
   }
+});
+
+
+cron.schedule('*/5 * * * *', () => {
+  console.log(`[CRON] Running ping task at ${new Date().toISOString()}`);
+  runPingTask();
 });
 
 
